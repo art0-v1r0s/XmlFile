@@ -1,19 +1,9 @@
 //gcc -Wall -fanalyzer -O6 -g main.c -o createFileXml
 #include <mysql.h>
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-#define ip "localhost"
-#define identifiant "ari"
-#define password "ari"
-#define bdd "predfackers"
-
-void finish_with_error(MYSQL *con)
-{
-  fprintf(stderr, "%s\n", mysql_error(con));
-  mysql_close(con);
-  exit(1);
-}
+#include "funcMysql.c"
 
 int main(int argc, char *argv[])
 {
@@ -38,42 +28,9 @@ int main(int argc, char *argv[])
         finish_with_error(con);
     }
 
-    if (mysql_query(con, "SELECT * FROM PRODUCT"))
-    {
-        finish_with_error(con);
-    }
-
-    MYSQL_RES *result = mysql_store_result(con);
-
-    if (result == NULL)
-    {
-        finish_with_error(con);
-    }
-
-    int num_fields = mysql_num_fields(result);
-
-    MYSQL_ROW row;
-
-    while ((row = mysql_fetch_row(result)))
-    {
-        for(int i = 0; i < num_fields; i++)
-        {
-            //printf("%s ", row[i] ? row[i] : "NULL");
-            data[i]=row[i] ? row[i] : "NULL";
-
-        }
-
-        printf("\n");
-    }
-
-    for (int i = 0; i < 11; i++)
-    {
-        printf("%s",data[i]);
-    }
-    
-
-    
-
+    long nbligne = numberLigne(con);
+     //SELECT * FROM PRODUCT
+    char  * product =  tab(con, nbligne);
     FILE* fichier = NULL;
 
     fichier = fopen("fileXml.xml", "w+");
@@ -96,8 +53,7 @@ int main(int argc, char *argv[])
         fclose(fichier); // On ferme le fichier qui a été ouvert
     }
 
-    mysql_free_result(result);
+    
     mysql_close(con);
-
     return 0;
 }
