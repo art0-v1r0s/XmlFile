@@ -26,10 +26,8 @@ int main(int argc, char *argv[])
     if (mysql_real_connect(con, ip, identifiant, password,bdd, 0, NULL, 0) == NULL){
         finish_with_error(con);
     }
-
-    long nbligne = numberLigne(con, warehouse);
      //SELECT * FROM PRODUCT
-    char  * product =  tab(con, nbligne, warehouse);
+    char  * product =  tab(con,  warehouse);
     mysql_close(con);
     return 0;
 }

@@ -1,5 +1,5 @@
 # change application name here (executable output name)
-TARGET=CurlMaGeule
+TARGET=Mysql
 
 # compiler
 CC=gcc
