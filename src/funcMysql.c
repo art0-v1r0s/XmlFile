@@ -127,10 +127,11 @@ void insert(char * query, int i, FILE * fichier, MYSQL *con){
 
 
 //Pour avoir un tableau des produits
-void  * tab(MYSQL *con,  char * warehouse){
+void  * tab(MYSQL *con,  char * warehouse, char * filename){
+    printf("%s",filename);
     char req[600];
     FILE* fichier = NULL;
-    fichier = fopen("fileXml.xml", "w+");
+    fichier = fopen(filename, "w+");
     fputs("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n", fichier);
     fprintf(fichier,"<entrepot id='%s'>\n",warehouse);
     char *query = "SELECT PRODUCT.id_product, CATEGORY.name, \
@@ -140,7 +141,6 @@ void  * tab(MYSQL *con,  char * warehouse){
     INNER JOIN MARK ON PRODUCT.mark = MARK.id_mark INNER JOIN WAREHOUSE ON \
     PRODUCT.warehouse = WAREHOUSE.id_warehouse  WHERE WAREHOUSE.name='%s'";
     sprintf(req, query, warehouse);
-    printf("%s\n", req);
     if (mysql_query(con, req))
     {
       finish_with_error(con);
